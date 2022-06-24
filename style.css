@@ -1,8 +1,23 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
 button {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
     border-radius: 10%;
-    font-size: 20px;
+    font-size: 40px;
+    border: 0px;
+    margin: 1px;
+}
+
+.buttons {
+    display: flex;
+    width: 488px;
+    flex-wrap: wrap;
+    border: 2px solid;
+    background-color: black;
 }
 
 .operator {
@@ -15,11 +30,21 @@ button {
 }
 
 button.double {
-    width: 120px;
+    width: 240px;
 }
 
 #screen {
-    width: 500px;
+    width: 488px;
     height: 200px;
-    border: 1px solid;
+    border: 2px solid;
+}
+
+#calculator {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    border: 6px solid;
+    justify-content: center;
+    align-content: center;
 }
