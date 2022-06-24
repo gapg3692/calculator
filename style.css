@@ -1,0 +1,25 @@
+button {
+    width: 60px;
+    height: 60px;
+    border-radius: 10%;
+    font-size: 20px;
+}
+
+.operator {
+    background-color: rgb(252, 144, 21);
+}
+
+.number {
+    background-color: rgb(64, 73, 73);
+    color: white;
+}
+
+button.double {
+    width: 120px;
+}
+
+#screen {
+    width: 500px;
+    height: 200px;
+    border: 1px solid;
+}
