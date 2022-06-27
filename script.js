@@ -4,38 +4,38 @@ const resultLine = document.querySelector(".resultLine");
 resultLine.textContent = "";
 let operatorVar = "";
 let cleanUpperLine = 0;
-
+let decimal = false;
 let result = 0;
 let previousNumber = 0; //this is the number that holds the upper line previous value
 
 function sum(numberA, numberB) {
-    return numberA + numberB;
+    return (numberA + numberB).toFixed(2);
 }
 
 function subtract(numberA, numberB) {
-    return numberA - numberB;
+    return (numberA - numberB).toFixed(2);
 }
 
 function multiply(numberA, numberB) {
-    return numberA * numberB;
+    return (numberA * numberB).toFixed(2);
 }
 
 function divide(numberA, numberB) {
-    if (numberB !== 0) return numberA / numberB;
+    if (numberB !== 0) return (numberA / numberB).toFixed(2);
     else return "UNDEFINED";
 }
 
 function mod(numberA, numberB) {
-    if (numberB !== 0) return numberA % numberB;
+    if (numberB !== 0) return (numberA % numberB).toFixed(2);
     else return "UNDEFINED";
 }
 
 function operator(numberA, numberB, operator) {
-    if (operator === "+") return sum(numberA, numberB).toFixed(2);
-    else if (operator === "-") return subtract(numberA, numberB).toFixed(2);
-    else if (operator === "*") return multiply(numberA, numberB).toFixed(2);
-    else if (operator === "/") return divide(numberA, numberB).toFixed(2);
-    else if (operator === "%") return mod(numberA, numberB).toFixed(2);
+    if (operator === "+") return sum(numberA, numberB);
+    else if (operator === "-") return subtract(numberA, numberB);
+    else if (operator === "*") return multiply(numberA, numberB);
+    else if (operator === "/") return divide(numberA, numberB);
+    else if (operator === "%") return mod(numberA, numberB);
 }
 
 function writeText(line, text) {
@@ -43,14 +43,18 @@ function writeText(line, text) {
     line.textContent += text;
 }
 
+function aC(element) {
+    upperLine.textContent = "0";
+    resultLine.textContent = "";
+    operatorVar = "";
+    cleanUpperLine = 0;
+    result = 0;
+    previousNumber = 0;
+}
+
 function operatorResolve(element) {
     if (element.textContent === "AC") {
-        upperLine.textContent = "0";
-        resultLine.textContent = "";
-        operatorVar = "";
-        cleanUpperLine = 0;
-        result = 0;
-        previousNumber = 0;
+        aC();
     } else if (element.textContent === "=") {
         if (resultLine.textContent !== "")
             upperLine.textContent = resultLine.textContent;
@@ -67,12 +71,20 @@ function operatorResolve(element) {
             upperLine.textContent = "";
             if (element.textContent === "+/-") upperLine.textContent = "-";
         }
-        if (element.textContent !== "+/-")
+
+        if (
+            element.textContent !== "+/-" &&
+            (element.textContent !== "." ||
+                (element.textContent === "." &&
+                    upperLine.textContent.search(/[\.]/) === -1))
+        ) {
             writeText(upperLine, element.textContent);
-        else if (upperLine.textContent !== "-") {
-            if (upperLine.textContent[0] === "-")
-                upperLine.textContent = upperLine.textContent.slice(1);
-            else upperLine.textContent = "-" + upperLine.textContent;
+        } else if (element.textContent === "+/-") {
+            if (upperLine.textContent !== "-") {
+                if (upperLine.textContent[0] === "-")
+                    upperLine.textContent = upperLine.textContent.slice(1);
+                else upperLine.textContent = "-" + upperLine.textContent;
+            }
         }
         if (upperLine.textContent !== "-") operations();
     } else {
@@ -80,7 +92,7 @@ function operatorResolve(element) {
         element.classList.remove("orange");
         if (operatorVar.length === 0)
             resultLine.textContent = upperLine.textContent;
-        else {
+        else if (element.textContent !== operatorVar) {
             document
                 .querySelector(`button[data-key="${operatorVar}"]`)
                 .classList.add("orange");
@@ -124,6 +136,7 @@ function operations() {
 }
 
 function keyPress(event) {
+    if (resultLine.textContent === "UNDEFINED") aC();
     const key = document.querySelector(`button[data-key="${event.key}"]`);
     console.log(event.key);
     event.preventDefault();
